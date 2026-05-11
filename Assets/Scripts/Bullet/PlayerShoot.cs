@@ -17,7 +17,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void Awake()
     {
-        
+     
         playerControl = GetComponent<PlayerControl>();
 
         // 自动获取所有武器组件
@@ -33,6 +33,8 @@ public class PlayerShoot : MonoBehaviour
         // 按住开火 = 连续射击，射速由 TryShoot 内部控制
         if (Input.GetButton("Fire1"))
         {
+            
+            playerControl.curAnimator.CrossFade("Fire", 0.01f, -1, 0f);
             currentGun.TryShoot();
         }
 
@@ -52,7 +54,10 @@ public class PlayerShoot : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             currentGun.Reload();
+            playerControl.curAnimator.CrossFade("Reload", 0.01f, -1, 0f);
         }
+        //检视
+
     }
 
     void SwitchGun(int index)
@@ -76,16 +81,18 @@ public class PlayerShoot : MonoBehaviour
         currentGunIndex = index;
         currentGun = guns[currentGunIndex];
         currentGun.gameObject.SetActive(true);
+        
 
         // 3. 换握持动画
         if (playerControl != null && currentGun.holdingAnimator != null)
         {
             playerControl.SwitchHoldingAnimation(currentGun.holdingAnimator);
         }
+        currentGun.UpdateUI();
 
         // 4. 拔枪
         playerControl.SetHolster(false);
 
-        Debug.Log($"切换到: {currentGun.name}");
+        //Debug.Log($"切换到: {currentGun.name}");
     }
 }

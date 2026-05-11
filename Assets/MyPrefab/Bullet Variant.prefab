@@ -54,7 +54,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 54704279786675872, guid: 5953171a59c27394e9ad5cbb564affa8, type: 3}
       propertyPath: m_Mass
-      value: 0.5
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 54704279786675872, guid: 5953171a59c27394e9ad5cbb564affa8, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54704279786675872, guid: 5953171a59c27394e9ad5cbb564affa8, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 96448838451407516, guid: 5953171a59c27394e9ad5cbb564affa8, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time

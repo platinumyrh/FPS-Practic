@@ -35,7 +35,7 @@ public class BulletControl : MonoBehaviour
        
         if (collision.gameObject.CompareTag("Destroyable"))
         {
-            Debug.Log($"Bullet hit destroyable object: {collision.gameObject.name}");
+            //Debug.Log($"Bullet hit destroyable object: {collision.gameObject.name}");
             Rigidbody hitRb = collision.gameObject.AddComponent<Rigidbody>();
             hitRb.AddForceAtPosition(transform.forward * 10f, collision.contacts[0].point, ForceMode.Impulse);
 

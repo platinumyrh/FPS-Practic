@@ -8,7 +8,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField]
     private Rigidbody rb;
     [SerializeField]
-    private Animator curAnimator;
+    public Animator curAnimator;
 
     
 
@@ -32,6 +32,8 @@ public class PlayerControl : MonoBehaviour
     //瞄准参数
     public bool isAiming = false;
 
+    public bool isInspecting = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -50,7 +52,7 @@ public class PlayerControl : MonoBehaviour
         Fall();
         Aim();
         Holstor();
-       // Inspect();
+        Inspect();
 
        // animator = playerShoot.currentGun.GetComponent<Animator>();
 
@@ -106,7 +108,7 @@ public class PlayerControl : MonoBehaviour
             Vector3 jumpDir = Vector3.up * jumpForce;
             rb.AddForce(jumpDir, ForceMode.Impulse);
             isJumping = true;
-            Debug.Log("Jumped");
+            //Debug.Log("Jumped");
         }
 
     }
@@ -153,12 +155,20 @@ public class PlayerControl : MonoBehaviour
     }
     public void Inspect()
     {
-        bool inspecting = curAnimator.GetBool("Inspected");
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.I))
         {
-           curAnimator.SetBool("Inspected", inspecting ? false : true);
-            Debug.Log("Inspect triggered");
+            // 如果正在换弹，不能检视
+            GunControl currentGun = GetComponent<PlayerShoot>()?.currentGun;
+            if (currentGun != null && currentGun.isReloading)
+            {
+                Debug.Log("换弹中无法检视！");
+                return;
+            }
+
+            curAnimator.CrossFade("Inspect", 0.05f, -1, 0f);
+            isInspecting = true;
         }
+
     }
     public void SetHolster(bool holster)
     {
@@ -170,10 +180,24 @@ public class PlayerControl : MonoBehaviour
     {
         if (curAnimator == null || holdingController == null) return;
 
-        // 直接替换 Animator Controller
+        // 替换 Animator 的 Controller
         curAnimator.runtimeAnimatorController = holdingController;
     }
-
+    public bool CanFire()
+    {
+        bool isHolstered = curAnimator.GetBool("Holstered");
+        if(isHolstered) return false;
+        if(isRunning) return false;
+        return true;
+    }
+    public void StopInspecting()
+    {
+        if (isInspecting)
+        { 
+           isInspecting = false;
+            curAnimator.CrossFade("Idle", 0.1f);
+        }
+    }
 
 }
 
