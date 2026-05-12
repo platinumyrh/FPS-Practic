@@ -20,7 +20,7 @@ public class HandGun : GunControl
         }
 
         
-        Debug.Log($"手枪射击！弹匣: {currentMagazineAmmo}/{magazineSize}");
+        //Debug.Log($"手枪射击！弹匣: {currentMagazineAmmo}/{magazineSize}");
     }
 
     public override void Reload()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public abstract class GunControl : MonoBehaviour
 {
@@ -63,6 +64,9 @@ public abstract class GunControl : MonoBehaviour
         {
             isReloading = false;
             // 可以在这里添加中断换弹的逻辑
+            
+            Debug.Log("中断换弹");
+            
         }
 
         if (Time.time < nextFireTime)
@@ -105,7 +109,7 @@ public abstract class GunControl : MonoBehaviour
             currentMagazineAmmo += ammoToReload;
             currentAmmo -= ammoToReload;
             UpdateUI();
-            isReloading = false ;
+            //isReloading = false ;
         }
         else
         {
@@ -126,6 +130,8 @@ public abstract class GunControl : MonoBehaviour
     {
         return currentAmmo==0?false:true;
     }
+
+  
 
   
 }
