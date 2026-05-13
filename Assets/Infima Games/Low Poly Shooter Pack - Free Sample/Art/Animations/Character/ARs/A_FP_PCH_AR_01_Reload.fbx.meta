@@ -549,14 +549,7 @@ ModelImporter:
           preInfinity: 3
           postInfinity: 3
           rotationOrder: 4
-      events:
-      - time: 0.9705812
-        functionName: OnReloadComplete
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 290c8e914b6f18a458bb9687293465f2, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

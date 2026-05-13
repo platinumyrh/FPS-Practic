@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +17,8 @@ public class PlayerShoot : MonoBehaviour
 
     private void Awake()
     {
-     
+      
+
         playerControl = GetComponent<PlayerControl>();
 
         // 自动获取所有武器组件
@@ -27,15 +28,36 @@ public class PlayerShoot : MonoBehaviour
         if (currentGun == null && guns.Count > 0)
             currentGun = guns[0];
     }
+    private void OnEnable()
+    {
+        GameEventBus.instance.Subscribe<GunFiredEventData>(GameEventType.GunFired, OnGunFired);
+        GameEventBus.instance.Subscribe<GunReloadedEventData>(GameEventType.GunReloaded, OnGunReloaded);
+    }
+    private void OnDisable()
+    {
+        GameEventBus.instance.Unsubscribe<GunFiredEventData>(GameEventType.GunFired, OnGunFired);
+        GameEventBus.instance.Unsubscribe<GunReloadedEventData>(GameEventType.GunReloaded, OnGunReloaded);
+    }
+    void OnGunFired(GunFiredEventData data)
+    {
+        playerControl.curAnimator.CrossFade("Fire", 0.01f, -1, 0f);
+       // Debug.Log($"开火动画触发: {data.Gun.name}");
+    }
 
+    void OnGunReloaded(GunReloadedEventData data)
+    {
+       
+      
+       // Debug.Log($"换弹动画触发: {data.Gun.name}, 装填了 {data.AmmoAdded} 发");
+    }
     void Update()
     {
         // 按住开火 = 连续射击，射速由 TryShoot 内部控制
         if (Input.GetButton("Fire1"))
         {
             
-            playerControl.curAnimator.CrossFade("Fire", 0.01f, -1, 0f);
-            currentGun.TryShoot();
+           // playerControl.curAnimator.CrossFade("Fire", 0.01f, -1, 0f);
+            currentGun.TryShoot();//通过tryshoot内的publish事件来触发上面的ingunfired触发动画
         }
 
         // 数字键切换武器
@@ -53,8 +75,16 @@ public class PlayerShoot : MonoBehaviour
         // 换弹
         if (Input.GetKeyDown(KeyCode.R))
         {
-            currentGun.Reload();
-            playerControl.curAnimator.CrossFade("Reload", 0.01f, -1, 0f);
+          
+            if (currentGun.currentMagazineAmmo < currentGun.magazineSize)
+            {
+                currentGun.Reload();
+                playerControl.curAnimator.CrossFade("Reload", 0.01f, -1, 0f);
+                
+            }
+            else
+                Debug.Log("弹药已满，无需换弹！");
+
         }
         //检视
 

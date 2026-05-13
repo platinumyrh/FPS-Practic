@@ -16,7 +16,8 @@ public class HandGun : GunControl
         BulletControl bullet = PoolManager.Instance.bulletPool.Get();
         if (bullet != null)
         {
-            bullet.Init(firePoint.position, firePoint.rotation);
+            Quaternion spreadRotation = GetSpreadRotation();
+            bullet.Init(firePoint.position, spreadRotation);
         }
 
         

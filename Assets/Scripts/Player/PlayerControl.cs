@@ -10,10 +10,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField]
     public Animator curAnimator;
 
-    
-
     private PlayerShoot playerShoot;
-
 
     //移动速度
     private float moveSpeed = 5f;
@@ -195,7 +192,11 @@ public class PlayerControl : MonoBehaviour
         if (isInspecting)
         { 
            isInspecting = false;
-            curAnimator.CrossFade("Idle", 0.1f);
+            // 获取 Layer Actions 层的索引（从截图看应该是第3层，但建议用名称）
+            int layerIndex = curAnimator.GetLayerIndex("Layer Actions");
+            // 播放 Default 状态，让该层回到空状态
+            curAnimator.Play("Default", layerIndex, 0f);
+            Debug.Log("中断检视");
         }
     }
 
