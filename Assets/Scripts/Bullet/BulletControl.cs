@@ -8,7 +8,7 @@ public class BulletControl : MonoBehaviour
 {
     private float speed = 30f;
     private Rigidbody rb;
-     public BulletPool ownerPool; // 由池设置
+    public BulletPool ownerPool; // 由池设置
 
     private void Awake()
     {
@@ -42,6 +42,15 @@ public class BulletControl : MonoBehaviour
             Destroy(collision.gameObject, 20f);
         }
         AutoRelease();
+       // PoolManager.Instance.multiParticleEffectPool.Get().Init(transform.position, transform.rotation);
+       GameEventBus.instance.Publish(GameEventType.BulletHit, new BulletHitEventData
+        {
+            HitPosition = transform.position,
+            HitNormal = collision.contacts[0].normal,
+            HitObject = collision.gameObject,
+            HitTag = collision.gameObject.tag
+        });
+       
     }
     private void AutoRelease()
     {

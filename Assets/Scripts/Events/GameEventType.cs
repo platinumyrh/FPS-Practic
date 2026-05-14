@@ -5,6 +5,7 @@ public enum GameEventType
     GunFired,           // 开枪
     GunReloaded,        // 换弹完成
     GunSwitched,        // 切换武器
+    BulletHit,          // 子弹击中
 
     // 音效相关
     PlaySound,          // 播放音效

@@ -42,6 +42,7 @@ public class PlayerShoot : MonoBehaviour
     {
         playerControl.curAnimator.CrossFade("Fire", 0.01f, -1, 0f);
        // Debug.Log($"开火动画触发: {data.Gun.name}");
+      
     }
 
     void OnGunReloaded(GunReloadedEventData data)

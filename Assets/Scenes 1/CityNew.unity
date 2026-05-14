@@ -3988,6 +3988,11 @@ MonoBehaviour:
   magazineSprite: {fileID: 21300000, guid: 51d720b69910c244aa44a082bddf0155, type: 3}
   scopeSprite: {fileID: 21300000, guid: bbbb29d2cf3c91741bc1a1b953ca5776, type: 3}
   useDotCrosshair: 0
+  hipFireSpreadAngle: 3
+  aimSpreadAngle: 0.5
+  spreadIncreasePerShot: 0.3
+  spreadRecoverySpeed: 3
+  maxSpreadAngle: 10
 --- !u!1 &401837380
 GameObject:
   m_ObjectHideFlags: 0
@@ -13159,6 +13164,11 @@ MonoBehaviour:
   magazineSprite: {fileID: 21300000, guid: d96558cda50c04347b69780fd84c6fc9, type: 3}
   scopeSprite: {fileID: 21300000, guid: 8dfba53139ea13f40b1977728ed0bea4, type: 3}
   useDotCrosshair: 0
+  hipFireSpreadAngle: 3
+  aimSpreadAngle: 0.5
+  spreadIncreasePerShot: 0.3
+  spreadRecoverySpeed: 3
+  maxSpreadAngle: 10
 --- !u!1 &1217411151
 GameObject:
   m_ObjectHideFlags: 0
@@ -21076,6 +21086,50 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1646009307}
+--- !u!1 &1881966112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1881966114}
+  - component: {fileID: 1881966113}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1881966113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881966112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42168d5e297793148a242e68cb72e959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1881966114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881966112}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 55.97906, y: 1.8912469, z: 67.59575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1882352820
 Mesh:
   m_ObjectHideFlags: 0
@@ -22596,6 +22650,7 @@ GameObject:
   - component: {fileID: 1995215902}
   - component: {fileID: 1995215901}
   - component: {fileID: 1995215903}
+  - component: {fileID: 1995215904}
   m_Layer: 0
   m_Name: PoolManager
   m_TagString: Untagged
@@ -22616,6 +22671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPool: {fileID: 1995215903}
+  effectPool: {fileID: 1995215904}
 --- !u!4 &1995215902
 Transform:
   m_ObjectHideFlags: 0
@@ -22646,6 +22702,27 @@ MonoBehaviour:
   prefab: {fileID: 9023297020074040807, guid: aa3176e8211de6b40a032b12f10f2a4e, type: 3}
   defaultSize: 10
   maxSize: 50
+--- !u!114 &1995215904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995215900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd778bc8cae8b9a408fb910139278810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectConfigs:
+  - effectName: BulletFeedback
+    prefab: {fileID: 486504012406978180, guid: cad33b307b9244b4c8765a9813be06fd, type: 3}
+    defaultCapacity: 10
+    maxSize: 20
+  - effectName: GunFireEffect
+    prefab: {fileID: 4834526503407549940, guid: 2735bebe54c1f5a4096f5134a96f7e77, type: 3}
+    defaultCapacity: 10
+    maxSize: 20
 --- !u!1001 &2003086627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24379,3 +24456,4 @@ SceneRoots:
   - {fileID: 2084407038}
   - {fileID: 376494449}
   - {fileID: 505687928}
+  - {fileID: 1881966114}
