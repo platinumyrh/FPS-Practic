@@ -39,7 +39,7 @@ public class EffectManager : MonoBehaviour
     private void OnGunFired(GunFiredEventData data)
     {
         PoolManager.Instance.effectPool.Play("GunFireEffect", data.FirePosition, data.FireDirection);
-        Debug.Log($"开火特效触发: {data.Gun.name} at {data.FirePosition}");
+       // Debug.Log($"开火特效触发: {data.Gun.name} at {data.FirePosition}");
     }
 
 
@@ -65,7 +65,7 @@ public class EffectManager : MonoBehaviour
                 PoolManager.Instance.effectPool.Play("BulletFeedback", data.HitPosition, data.HitNormal);
                 break;
         }
-        Debug.Log($"命中特效触发: {data.HitTag} at {data.HitPosition}");
+       // Debug.Log($"命中特效触发: {data.HitTag} at {data.HitPosition}");
     }
     
 

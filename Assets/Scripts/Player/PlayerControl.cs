@@ -14,6 +14,10 @@ public class PlayerControl : MonoBehaviour
 
     //移动速度
     private float moveSpeed = 5f;
+    // 状态记录字段
+    private bool wasMoving = false;
+    private bool wasRunning = false;
+
 
     private bool isRunning = false;
     //跳跃参数
@@ -30,6 +34,7 @@ public class PlayerControl : MonoBehaviour
     public bool isAiming = false;
 
     public bool isInspecting = false;
+    private bool hasPublishedAimEvent = false;  // 新增标志位
 
     void Start()
     {
@@ -81,24 +86,55 @@ public class PlayerControl : MonoBehaviour
 
     private void Move()
     {
-        float moveX = Input.GetAxis("Horizontal") ;
-        float moveZ = Input.GetAxis("Vertical") ;
-
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
         isRunning = Input.GetKey(KeyCode.LeftShift);
         moveSpeed = isRunning ? 8f : 5f;
-      
+
         Vector3 moveDir = transform.forward * moveZ + transform.right * moveX;
         Vector3 horizontalVelocity = moveDir * moveSpeed;
         rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.z);
 
-        //动画控制
+        // 动画控制
         bool isMoving = moveX != 0 || moveZ != 0;
-        
         curAnimator.SetFloat("Movement", isMoving ? 1 : 0);
         curAnimator.SetBool("Running", isRunning && isMoving);
 
+        // ========== 发布移动事件（只在状态变化时）==========
+
+        // 情况1：从静止到移动（走路）
+        if (isMoving && !wasMoving && !isRunning)
+        {
+            GameEventBus.instance.Publish(GameEventType.PlayerMove, new PlayerMoveEventData
+            {
+                position = transform.position
+            });
+        }
+
+        // 情况2：从静止到奔跑，或从走路切换到奔跑
+        else if (isMoving && isRunning && (!wasMoving || !wasRunning))
+        {
+            GameEventBus.instance.Publish(GameEventType.PlayerRun, new PlayerRunEventData
+            {
+                position = transform.position
+            });
+        }
+
+        // 情况3：从奔走到走路（减速）
+        else if (isMoving && !isRunning && wasRunning)
+        {
+            GameEventBus.instance.Publish(GameEventType.PlayerMove, new PlayerMoveEventData
+            {
+                position = transform.position
+            });
+        }
+
+        // 更新状态记录
+        wasMoving = isMoving;
+        wasRunning = isRunning;
     }
-    public void Jump()
+
+public void Jump()
     {
        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {   
@@ -125,19 +161,32 @@ public class PlayerControl : MonoBehaviour
 
     public void Aim()
     {
+       
         float aim = curAnimator.GetFloat("Aiming");
         if (Input.GetMouseButton(1)&&!isRunning)
         {
             isAiming = true;
             curAnimator.SetBool("Aim", true);
             curAnimator.SetFloat("Aiming", Mathf.Lerp(aim,1,0.1f));
+            // 只在第一次瞄准时发布事件
+            if (!hasPublishedAimEvent)
+            {
+                GameEventBus.instance.Publish(GameEventType.StartAiming, new StartAimingEventData
+                {
+                    position = curAnimator.transform.position + curAnimator.transform.forward * 10f
+                });
+                hasPublishedAimEvent = true;  // 标记已发布
+            }
         }
         else
         {
             isAiming = false;
             curAnimator.SetBool("Aim", false);
             curAnimator.SetFloat("Aiming", Mathf.Lerp(aim, 0, 0.1f));
+
+            hasPublishedAimEvent = false;  // 松开右键，重置标志位
         }
+       
     }
     public void Holstor()
     {

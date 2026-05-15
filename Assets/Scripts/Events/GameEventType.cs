@@ -6,6 +6,15 @@ public enum GameEventType
     GunReloaded,        // 换弹完成
     GunSwitched,        // 切换武器
     BulletHit,          // 子弹击中
+    StartReload,         // 开始换弹
+    StartAiming,         // 开始瞄准
+    HolsterWeapon,        // 收起武器
+    UnHolsterWeapon,     // 拿出武器
+
+    //玩家相关
+    PlayerMove,          // 玩家移动
+    PlayerRun,            // 玩家奔跑
+
 
     // 音效相关
     PlaySound,          // 播放音效

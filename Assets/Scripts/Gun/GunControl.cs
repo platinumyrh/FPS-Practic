@@ -149,6 +149,7 @@ public abstract class GunControl : MonoBehaviour
         GameEventBus.instance.Publish(GameEventType.GunReloaded, new GunReloadedEventData
         {
             Gun = this,
+            position = transform.position,
             AmmoAdded = ammoToReload
         });
 
@@ -177,7 +178,13 @@ public abstract class GunControl : MonoBehaviour
 
         // 2. 开始换弹
         isReloading = true;
-       gunAnimator.CrossFade("Reload", 0.05f, -1, 0f);
+        GameEventBus.instance.Publish(GameEventType.StartReload, new StartReloadEventData
+        {
+            Gun = this,
+            position = transform.position,
+           
+        });
+        gunAnimator.CrossFade("Reload", 0.05f, -1, 0f);
 
         // 注意：这里不更新弹药！等待动画事件触发 OnReloadComplete
     }

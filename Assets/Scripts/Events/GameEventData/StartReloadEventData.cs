@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunReloadedEventData : GameEventData
+public class StartReloadEventData : GameEventData
 {
     public GunControl Gun { get; set; }
 
     public Vector3 position { get; set; }
-    public int AmmoAdded { get; set; }
+  
 }

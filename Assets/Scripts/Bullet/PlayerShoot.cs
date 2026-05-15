@@ -103,6 +103,11 @@ public class PlayerShoot : MonoBehaviour
     {
         // 1. 收枪
         playerControl.SetHolster(true);
+        GameEventBus.instance.Publish(GameEventType.HolsterWeapon, new HolsterWeapon
+        {
+            position = currentGun.transform.position
+        });
+       
 
         // 等收枪动画播放一段时间（根据你的动画时长调整）
         yield return new WaitForSeconds(0.3f);
@@ -124,6 +129,12 @@ public class PlayerShoot : MonoBehaviour
         // 4. 拔枪
         playerControl.SetHolster(false);
 
+        GameEventBus.instance.Publish(GameEventType.UnHolsterWeapon, new UnHolsterWeapon 
+        {
+               position = currentGun.transform.position
+        });
+    }
+
         //Debug.Log($"切换到: {currentGun.name}");
     }
-}
+
