@@ -14,9 +14,12 @@ public class PlayerControl : MonoBehaviour
 
     //移动速度
     private float moveSpeed = 5f;
-    // 状态记录字段
-    private bool wasMoving = false;
-    private bool wasRunning = false;
+    // 脚步声时间控制
+    private float lastFootstepTime = 0f;
+    private float walkInterval = 0.5f;   // 走路间隔（秒）
+    private float runInterval = 0.3f;    // 奔跑间隔（秒）
+
+
 
 
     private bool isRunning = false;
@@ -99,39 +102,22 @@ public class PlayerControl : MonoBehaviour
         bool isMoving = moveX != 0 || moveZ != 0;
         curAnimator.SetFloat("Movement", isMoving ? 1 : 0);
         curAnimator.SetBool("Running", isRunning && isMoving);
+        // 播放脚步声（带时间间隔）
+        //if (isMoving)
+        //{
+        //    float currentInterval = isRunning ? runInterval : walkInterval;
 
-        // ========== 发布移动事件（只在状态变化时）==========
+        //    if (Time.time - lastFootstepTime >= currentInterval)
+        //    {
+        //        string soundName = isRunning ? "Run" : "Walk";
+        //        SoundManager.Instance.PlaySound3D(soundName, transform.position);
+        //        lastFootstepTime = Time.time;
+        //    }
+        //}
 
-        // 情况1：从静止到移动（走路）
-        if (isMoving && !wasMoving && !isRunning)
-        {
-            GameEventBus.instance.Publish(GameEventType.PlayerMove, new PlayerMoveEventData
-            {
-                position = transform.position
-            });
-        }
 
-        // 情况2：从静止到奔跑，或从走路切换到奔跑
-        else if (isMoving && isRunning && (!wasMoving || !wasRunning))
-        {
-            GameEventBus.instance.Publish(GameEventType.PlayerRun, new PlayerRunEventData
-            {
-                position = transform.position
-            });
-        }
 
-        // 情况3：从奔走到走路（减速）
-        else if (isMoving && !isRunning && wasRunning)
-        {
-            GameEventBus.instance.Publish(GameEventType.PlayerMove, new PlayerMoveEventData
-            {
-                position = transform.position
-            });
-        }
 
-        // 更新状态记录
-        wasMoving = isMoving;
-        wasRunning = isRunning;
     }
 
 public void Jump()

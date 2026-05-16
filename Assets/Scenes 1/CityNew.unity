@@ -20367,6 +20367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e324d73c7417f9a40b455ac0d105c8cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  masterVolume: 1
   bgmSource: {fileID: 0}
   maxSFXSources: 10
   soundConfigs:
